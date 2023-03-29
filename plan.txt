@@ -1,0 +1,11 @@
+set up node 
+
+connect database 
+
+creating apis 
+    create quiz 
+    add questions 
+    delete questions 
+
+
+that quiz should be 
