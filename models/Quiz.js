@@ -10,6 +10,7 @@ const QuizSchema = new mongoose.Schema({
       answer: String,
     },
   ],
+  marks: Number,
   limit: Date,
 });
 

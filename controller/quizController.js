@@ -1,10 +1,11 @@
-import { Quiz } from "../models/Quiz";
+import { Quiz } from "../models/Quiz.js";
+import { Submit } from "../models/SaveQuiz.js";
 
 export const createQuiz = async (req, res) => {
   try {
-    const { title, description, limit } = req.body;
-
-    const save = await Quiz.create({ title, description, limit });
+    const { title, description, marks, limit } = req.body;
+    console.log("this is file");
+    const save = await Quiz.create({ title, description, marks, limit });
 
     await save.save();
     res
@@ -17,16 +18,20 @@ export const createQuiz = async (req, res) => {
 
 export const addQuestions = async (req, res) => {
   try {
-    const { questionTitle, answer, options } = req.body;
-
+    const { title, answer, options } = req.body;
+    console.log(title, answer, options);
     const quizId = req.query.quizId;
     const quiz = await Quiz.findOne({ _id: quizId });
-
+    console.log(quiz);
     // Add the new question to the quiz
+
+    const obj = options.map((item, index) => {
+      return { option: item };
+    });
     const newQuestion = {
-      questionTitle,
+      title,
       answer,
-      options,
+      options: obj,
     };
     quiz.questions.push(newQuestion);
 
@@ -35,6 +40,7 @@ export const addQuestions = async (req, res) => {
 
     res.status(200).json({ message: "Question added successfully." });
   } catch (error) {
+    console.log(error.message);
     res.status(500).json({ message: "Server error." });
   }
 };
@@ -88,4 +94,25 @@ export const updateQuestions = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+};
+
+export const submitQuiz = async (req, res) => {
+  const { submission } = req.body;
+
+  const quizId = req.query.quizId;
+
+  const quiz = await Quiz.findById(quizId);
+
+  const data = {
+    title: quiz.title,
+    description: quiz.description,
+    submission,
+    marks: quiz.marks,
+    limit: quiz.limit,
+  };
+
+  await Submit.create(data);
+  res
+    .status(200)
+    .json({ success: true, message: "Quiz submitted successfully" });
 };
