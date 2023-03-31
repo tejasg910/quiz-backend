@@ -11,7 +11,7 @@ const QuizSchema = new mongoose.Schema({
     },
   ],
   marks: Number,
-  limit: Date,
+  limit: Number,
 });
 
 export const Quiz = mongoose.model("Quiz", QuizSchema);

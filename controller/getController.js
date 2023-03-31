@@ -20,14 +20,17 @@ export const getAllQuestions = async (req, res) => {
   const response = await Quiz.findById(quizId);
 
   const data = response.questions;
+  const time = response.limit;
   console.log(data);
-  res.status(200).json({ success: true, data });
+  res.status(200).json({ success: true, data, time });
 };
 
 export const getAllQuizQuestions = async (req, res) => {
   const quizId = req.query.quizId;
 
   const questions = await Quiz.findById(quizId).select("-answer");
+  const time = questions.limit;
+
   const data = questions.questions;
-  res.status(200).json({ success: true, data });
+  res.status(200).json({ success: true, data, time });
 };

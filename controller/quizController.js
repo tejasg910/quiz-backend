@@ -5,7 +5,14 @@ export const createQuiz = async (req, res) => {
   try {
     const { title, description, marks, limit } = req.body;
     console.log("this is file");
-    const save = await Quiz.create({ title, description, marks, limit });
+
+    const limiTime = Date.now() + limit * 1000 * 60;
+    const save = await Quiz.create({
+      title,
+      description,
+      marks,
+      limit: limiTime,
+    });
 
     await save.save();
     res
@@ -103,6 +110,23 @@ export const submitQuiz = async (req, res) => {
 
   const quiz = await Quiz.findById(quizId);
 
+  let marksObtained = 0;
+
+  const originalQuiz = quiz.questions;
+
+  originalQuiz.map((item, index) => {
+    submission.map((value, i) => {
+      if (item.answer === value.selectedAnswer) {
+        marksObtained++;
+      }
+    });
+  });
+
+  const score = {
+    marksObtained,
+    totalMarks: quiz.marks * originalQuiz.length,
+  };
+
   const data = {
     title: quiz.title,
     description: quiz.description,
@@ -114,5 +138,5 @@ export const submitQuiz = async (req, res) => {
   await Submit.create(data);
   res
     .status(200)
-    .json({ success: true, message: "Quiz submitted successfully" });
+    .json({ success: true, message: "Quiz submitted successfully", score });
 };

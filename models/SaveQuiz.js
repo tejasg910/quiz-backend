@@ -4,7 +4,10 @@ const SaveQuizSchema = new mongoose.Schema({
   title: String,
   description: String,
   sumbmission: [{ title: String, index: Number, answer: String }],
-  marks: Number,
+  marks: {
+    type: Number,
+    default: 1,
+  },
   limit: Date,
 });
 
