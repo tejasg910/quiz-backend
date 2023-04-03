@@ -22,7 +22,7 @@ export const getAllQuestions = async (req, res) => {
 
   const data = response.questions;
   const time = response.limit;
-  console.log(data);
+
   res.status(200).json({ success: true, data, time });
 };
 
