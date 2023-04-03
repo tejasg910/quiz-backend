@@ -1,4 +1,5 @@
 import { Quiz } from "../models/Quiz.js";
+import { Submit } from "../models/SaveQuiz.js";
 
 export const getQuizData = async (req, res) => {
   const data = await Quiz.find({});
@@ -33,4 +34,13 @@ export const getAllQuizQuestions = async (req, res) => {
 
   const data = questions.questions;
   res.status(200).json({ success: true, data, time });
+};
+
+export const getSubmittedQuiz = async (req, res) => {
+  try {
+    const data = await Submit.find({});
+    res.status(200).json({ success: true, data });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 };

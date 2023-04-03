@@ -4,6 +4,7 @@ import {
   getAllQuizQuestions,
   getQuestions,
   getQuizData,
+  getSubmittedQuiz,
 } from "../controller/getController.js";
 import {
   addQuestions,
@@ -22,5 +23,6 @@ router.get("/getallquestions", getAllQuestions);
 router.get("/getquizquestions", getAllQuizQuestions);
 router.post("/submitquiz", submitQuiz);
 router.post("/deletequestion", deleteQuestion);
+router.get("/getsubmittedquiz", getSubmittedQuiz);
 
 export default router;

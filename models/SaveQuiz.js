@@ -3,12 +3,11 @@ import mongoose from "mongoose";
 const SaveQuizSchema = new mongoose.Schema({
   title: String,
   description: String,
-  sumbmission: [{ title: String, index: Number, answer: String }],
   marks: {
     type: Number,
-    default: 1,
+    default: 0,
   },
-  limit: Date,
+  totalMarks: Number,
 });
 
 export const Submit = mongoose.model("Submit", SaveQuizSchema);

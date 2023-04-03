@@ -4,9 +4,8 @@ import { Submit } from "../models/SaveQuiz.js";
 export const createQuiz = async (req, res) => {
   try {
     const { title, description, marks, limit } = req.body;
-    console.log("this is file");
 
-    const limiTime = Date.now() + limit * 1000 * 60;
+    const limiTime = limit;
     const save = await Quiz.create({
       title,
       description,
@@ -26,10 +25,10 @@ export const createQuiz = async (req, res) => {
 export const addQuestions = async (req, res) => {
   try {
     const { title, answer, options } = req.body;
-    console.log(title, answer, options);
+
     const quizId = req.query.quizId;
     const quiz = await Quiz.findOne({ _id: quizId });
-    console.log(quiz);
+
     // Add the new question to the quiz
 
     const obj = options.map((item, index) => {
@@ -47,7 +46,6 @@ export const addQuestions = async (req, res) => {
 
     res.status(200).json({ message: "Question added successfully." });
   } catch (error) {
-    console.log(error.message);
     res.status(500).json({ message: "Server error." });
   }
 };
@@ -67,7 +65,6 @@ export const deleteQuestion = async (req, res) => {
 
     return res.status(200).json({ message: "Question deleted successfully" });
   } catch (err) {
-    console.error(err);
     return res.status(500).json({ error: "Server error" });
   }
 };
@@ -130,9 +127,9 @@ export const submitQuiz = async (req, res) => {
   const data = {
     title: quiz.title,
     description: quiz.description,
-    submission,
-    marks: quiz.marks,
-    limit: quiz.limit,
+
+    marks: marksObtained,
+    totalMarks: originalQuiz.length,
   };
 
   await Submit.create(data);
